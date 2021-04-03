@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:55:42 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/03/31 20:41:20 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/03 20:32:42 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 #include "unistd.h"
 #include <stack>
 #include "stack.hpp"
+#include "queue.hpp"
+#include "queue"
+#include "vector"
+#include "vector.hpp"
 using namespace ft;
 
 bool pppp(int n)
@@ -243,31 +247,112 @@ int main()
 	// }
 	// std::cout << std::endl;
 	// }
-	std::stack<int> stk2;
+	// std::stack<int> stk2;
 	
-	stk2.push(120);
-	stk2.push(121);
+	// stk2.push(120);
+	// stk2.push(121);
 	
-	Stack<int> stl2;
+	// Stack<int> stl2;
 	
-	stl2.push(120);
-	stl2.push(121);
+	// stl2.push(120);
+	// stl2.push(121);
 
-	std::stack<int> stk;
-	Stack<int> mystl(stl2);
+	// std::stack<int> stk;
+	// Stack<int> mystl(stl2);
 	
-	stk.push(10);
-	std::cout << stk.empty() << std::endl;
-	stk.push(11);
-	stk.swap(stk2);
-	std::cout << stk.size() << std::endl;
-	std::cout << stk.top() << std::endl;
-	mystl.push(10);
-	std::cout << mystl.empty() << std::endl;
-	mystl.push(11);
-	std::cout << std::boolalpha;
-	// std::cout << (stl2 > mystl) << std::endl;
-	// mystl.pop();
-	for (; !mystl.empty(); mystl.pop())
-        std::cout << mystl.top() << ' ';
+	// stk.push(10);
+	// std::cout << stk.empty() << std::endl;
+	// stk.push(11);
+	// stk.swap(stk2);
+	// std::cout << stk.size() << std::endl;
+	// std::cout << stk.top() << std::endl;
+	// mystl.push(10);
+	// std::cout << mystl.empty() << std::endl;
+	// mystl.push(11);
+	// std::cout << std::boolalpha;
+	// // std::cout << (stl2 > mystl) << std::endl;
+	// // mystl.pop();
+	// for (; !mystl.empty(); mystl.pop())
+    //     std::cout << mystl.top() << ' ';
+	// std::queue<int> q;
+	// q.push(2);
+	// q.push(2);
+	// q.push(3);
+	// Queue<int> qq;
+	// qq.push(1);
+	// qq.push(2);
+	// qq.push(4);
+	// std::queue<int> q3;
+	// q3.push(1);
+	// q3.push(2);
+	// q3.push(3);
+	// std::cout << std::boolalpha;
+	// std::cout << (q > q3) <<  std::endl;
+	// std::queue<int> q1 =q;
+	// Queue<int> qq1 = qq;
+	// while (!q1.empty())
+	// {
+	// 	std::cout << q1.front() << " " << q1.back() << " - " << qq1.front() << " " << qq1.back() << std::endl;;
+	// 	q1.pop();
+	// 	qq1.pop();
+	// }
+
+	std::vector<std::string> v;
+	Vector<std::string> vv;
+
+	vv.push_back("Hello");
+	vv.push_back("World");
+	vv.push_back("!");
+	vv.push_back("!");
+	
+	v.push_back("Hello");
+	v.push_back("World");
+	v.push_back("!");
+	v.push_back("!");
+
+	// v.pop_back();
+	// v.pop_back();
+	// v.pop_back();
+	// v.pop_back();
+	// vv.pop_back();
+	// vv.pop_back();
+	// vv.pop_back();
+	// vv.pop_back();
+	// v.pop_back();
+	// vv.clear();
+	// v.clear();
+	v.assign(5, "ooo");
+	vv.assign(5, "ooo");
+	v.push_back("!");
+	vv.push_back("!");
+	Vector<std::string> vv2;
+	std::vector<std::string> v2;
+	std::string array[3] = {"one", "two", "three"};
+	vv2.assign(array, array + 3);
+	v2.assign(array, array + 3);
+	ft::swap(vv, vv2);
+	std::swap(v, v2);
+	ft::swap(vv, vv2);
+	std::swap(v, v2);
+	v.resize(19);
+	vv.resize(19);
+	for(std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+	for (size_t i = 0; i < vv.size(); i++)
+		std::cout << vv[i] << " ";
+	std::cout << std::endl;
+	// v.reserve(10);
+	// vv.reserve(10);
+	// v2.reserve(100);
+	// vv2.reserve(100);
+	// v.at(5) = "wow";
+	// vv.at(5) = "wow";
+	// std::cout << v.at(5) << " - "		<< vv.at(5) << std::endl;
+	std::cout << v.empty() << " - " 	<< vv.empty() << std::endl;
+	std::cout << v.size() << " - "		<< vv.size() << std::endl;
+	std::cout << v.capacity() << " - "	<< vv.capacity() << std::endl;
+	std::cout << v.back() << " - "		<< vv.back()<< std::endl;
+	std::cout << v.front() << " - "		<< vv.front()<< std::endl;
+
 }

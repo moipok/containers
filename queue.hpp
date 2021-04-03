@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack.hpp                                          :+:      :+:    :+:   */
+/*   queue.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/31 19:47:26 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/04/01 16:17:31 by fbarbera         ###   ########.fr       */
+/*   Created: 2021/04/01 16:24:23 by fbarbera          #+#    #+#             */
+/*   Updated: 2021/04/01 16:49:32 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STACK_HPP
-# define STACK_HPP
+#ifndef QUEUE_HPP
+# define QUEUE_HPP
 # include "list.hpp"
 
 namespace ft
 {
 	template<class T> 
-		class Stack
+		class Queue
 		{
 		private:
 			Node<T>	*Head;
+			Node<T>	*Tail;
 			size_t _size;
 		protected:
-			Node<T>	*Get_node() const {return Head;}
+			Node<T>	*Get_node() const {return Tail;}
 		public:
-			Stack() : Head(NULL), _size(0) {}
-			Stack(Stack const &other)
+			Queue() : Head(NULL), _size(0) {}
+			Queue(Queue const &other)
 			{
 				_size = 0;
 				Node<T> *tmp = other.Head;
@@ -39,7 +40,7 @@ namespace ft
 					tmp = tmp->Prev;
 				}
 			}
-			Stack &operator=(Stack const &other)
+			Queue &operator=(Queue const &other)
 			{
 				while (_size) pop();
 				Node<T> *tmp = other.Head;
@@ -53,10 +54,10 @@ namespace ft
 				}
 				return *this;
 			}
-			~Stack() { while (_size) pop(); }
+			~Queue() { while (_size) pop(); }
 			void push(const T &value)
 			{
-				Node<T> *temp = new Node<T>;
+				Node<T>  *temp = new Node<T>;
 				temp->Prev = NULL;
 				temp->content = value;
 				_size++;
@@ -69,29 +70,31 @@ namespace ft
 				else
 				{
 					temp->Next = NULL;
-					Head =  temp;
+					Head = Tail = temp;
 				}
 			}
-			const T &top() const { return (Head->content); }
-			T &top() { return (Head->content);}
+			const T &back() const { return (Head->content); }
+			T &back() { return (Head->content);}
+			const T &front() const { return (Tail->content); }
+			T &front() { return (Tail->content);}
 			size_t size() const { return _size; }
 			bool empty() const { return _size==0;}
 			void pop()
 			{
 				if (_size)
 				{
-					Node<T> *tmp = Head->Next;
-					delete Head;
-					Head = tmp;
+					Node<T> *tmp = Tail->Prev;
+					delete Tail;
+					Tail = tmp;
 					_size--;
 				}
 			}
-			void swap( Stack& other )
+			void swap( Queue& other )
 			{
 				ft::swap(this->_size, other._size);
 				ft::swap(this->Head, other.Head);
 			}
-			friend bool operator==( const Stack& lhs, const Stack& rhs )
+			friend bool operator==( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
@@ -101,12 +104,12 @@ namespace ft
 				{
 					if (one->content != two->content)
 						return false;
-					one = one->Next;
-					two = two->Next;
+					one = one->Prev;
+					two = two->Prev;
 				}
 				return true;
 			}
-			friend bool operator!=( const Stack& lhs, const Stack& rhs )
+			friend bool operator!=( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
@@ -116,12 +119,12 @@ namespace ft
 				{
 					if (one->content != two->content)
 						return true;
-					one = one->Next;
-					two = two->Next;
+					one = one->Prev;
+					two = two->Prev;
 				}
 				return false;
 			}
-			friend bool operator>( const Stack& lhs, const Stack& rhs )
+			friend bool operator>( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
@@ -133,12 +136,12 @@ namespace ft
 				{
 					if (one->content <= two->content)
 						return false;
-					one = one->Next;
-					two = two->Next;
+					one = one->Prev;
+					two = two->Prev;
 				}
 				return true;
 			}
-			friend bool operator>=( const Stack& lhs, const Stack& rhs )
+			friend bool operator>=( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
@@ -150,12 +153,12 @@ namespace ft
 				{
 					if (one->content < two->content)
 						return false;
-					one = one->Next;
-					two = two->Next;
+					one = one->Prev;
+					two = two->Prev;
 				}
 				return true;
 			}
-			friend bool operator<( const Stack& lhs, const Stack& rhs )
+			friend bool operator<( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
@@ -167,12 +170,12 @@ namespace ft
 				{
 					if (two->content <= one->content)
 						return false;
-					one = one->Next;
-					two = two->Next;
+					one = one->Prev;
+					two = two->Prev;
 				}
 				return true;
 			}
-			friend bool operator<=( const Stack& lhs, const Stack& rhs )
+			friend bool operator<=( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
@@ -184,8 +187,8 @@ namespace ft
 				{
 					if (two->content < one->content)
 						return false;
-					one = one->Next;
-					two = two->Next;
+					one = one->Prev;
+					two = two->Prev;
 				}
 				return true;
 			}

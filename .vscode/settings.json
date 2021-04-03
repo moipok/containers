@@ -65,6 +65,8 @@
 		"deque": "cpp",
 		"stack": "cpp",
 		"__functional_03": "cpp",
-		"memory_resource": "cpp"
+		"memory_resource": "cpp",
+		"queue": "cpp",
+		"__sso_allocator": "cpp"
 	}
 }
