@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 22:26:16 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/03/31 19:39:36 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/04 20:17:11 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -534,6 +534,8 @@ namespace ft
 			}
 			friend bool operator==( const List& lhs, const List& rhs )
 			{
+				if (lhs.size() != rhs.size())
+					return false;
 				iterator it = rhs.begin();
 				for (iterator i = lhs.begin(); i != lhs.end(); i++)
 				{
@@ -545,68 +547,36 @@ namespace ft
 			}
 			friend bool operator!=( const List& lhs, const List& rhs )
 			{
-				iterator it = rhs.begin();
-				for (iterator i = lhs.begin(); i != lhs.end(); i++)
+				return !(lhs == rhs);
+			}
+			friend bool operator>( const List& one, const List& two )
+			{
+				iterator it2 = two.begin();
+				for (iterator it = one.begin(); it != one.end(); it++)
 				{
-					if (*i != *it)
+					if (it2 == two.end())
 						return true;
-					it++;
-				}
-				return false;
-			}
-			friend bool operator<( const List& lhs, const List& rhs )
-			{
-				if (lhs.size() != rhs.size())
-					return lhs.size() >= rhs.size();
-				iterator it = rhs.begin();
-				for (iterator i = lhs.begin(); i != lhs.end(); i++)
-				{
-					if (*i >= *it)
+					if (*it < *it2)
 						return false;
-					it++;
+					if (*it > *it2)
+						return true;
+					it2++;
 				}
+				if (it2 != two.end())
+					return false;
 				return true;
 			}
-			friend bool operator<=( const List& lhs, const List& rhs )
+			friend bool operator>=( const List& one, const List& two )
 			{
-				if (lhs.size() != rhs.size())
-					return lhs.size() > rhs.size();
-				iterator it = rhs.begin();
-				for (iterator i = lhs.begin(); i != lhs.end(); i++)
-				{
-					if (*i > *it)
-						return false;
-					it++;
-				}
-				return true;
+				return (one > two || one == two);
 			}
-			friend bool operator>( const List& lhs, const List& rhs )
+			friend bool operator<( const List& one, const List& two )
 			{
-				if (lhs.size() != rhs.size())
-					return lhs.size() <= rhs.size();
-				iterator it = rhs.begin();
-				iterator i = lhs.begin();
-				for (; i != lhs.end(); i++)
-				{
-					if (*i <= *it)
-						return false;
-					it++;
-				}
-				return true;
+				return !(one >= two);
 			}
-			friend bool operator>=( const List& lhs, const List& rhs )
+			friend bool operator<=( const List& one, const List& two )
 			{
-				if (lhs.size() != rhs.size())
-					return lhs.size() < rhs.size();
-				iterator it = rhs.begin();
-				iterator i = lhs.begin();
-				for (; i != lhs.end(); i++)
-				{
-					if (*i < *it)
-						return false;
-					it++;
-				}
-				return true;
+				return !(one > two);
 			}
 		};
 };

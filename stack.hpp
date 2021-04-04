@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:47:26 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/04/01 16:17:31 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/04 20:20:23 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,86 +108,38 @@ namespace ft
 			}
 			friend bool operator!=( const Stack& lhs, const Stack& rhs )
 			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() != rhs->size())
-					return true;
-				while (one)
-				{
-					if (one->content != two->content)
-						return true;
-					one = one->Next;
-					two = two->Next;
-				}
-				return false;
+				return !(lhs == rhs);
 			}
 			friend bool operator>( const Stack& lhs, const Stack& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() > rhs->size())
-					return true;
-				else if (lhs->size() < rhs->size())
-					return false;
 				while (one)
 				{
-					if (one->content <= two->content)
-						return false;
-					one = one->Next;
-					two = two->Next;
-				}
-				return true;
-			}
-			friend bool operator>=( const Stack& lhs, const Stack& rhs )
-			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() > rhs->size())
-					return true;
-				else if (lhs->size() < rhs->size())
-					return false;
-				while (one)
-				{
+					if (two == NULL)
+						return true;
 					if (one->content < two->content)
 						return false;
+					else if (one->content > two->content)
+						return true;
 					one = one->Next;
 					two = two->Next;
 				}
+				if (two != NULL)
+					return false;
 				return true;
 			}
-			friend bool operator<( const Stack& lhs, const Stack& rhs )
+			friend bool operator>=( const Stack& one, const Stack& two )
 			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() < rhs->size())
-					return true;
-				else if (lhs->size() > rhs->size())
-					return false;
-				while (one)
-				{
-					if (two->content <= one->content)
-						return false;
-					one = one->Next;
-					two = two->Next;
-				}
-				return true;
+				return (one > two || one == two);
 			}
-			friend bool operator<=( const Stack& lhs, const Stack& rhs )
+			friend bool operator<( const Stack& one, const Stack& two )
 			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() < rhs->size())
-					return true;
-				else if (lhs->size() > rhs->size())
-					return false;
-				while (one)
-				{
-					if (two->content < one->content)
-						return false;
-					one = one->Next;
-					two = two->Next;
-				}
-				return true;
+				return !(one >= two);
+			}
+			friend bool operator<=( const Stack& one, const Stack& two )
+			{
+				return !(one > two);
 			}
 		};
 };

@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 16:50:40 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/04/03 20:39:46 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/04 20:16:00 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,98 @@ private:
 		virtual ~SegExceptionn() throw() { }
 	};
 public:
+	class iterator {
+	public:
+		iterator() : _ptr(nullptr) {}
+		iterator(T* rhs) : _ptr(rhs) {}
+		iterator(const iterator &rhs) : _ptr(rhs._ptr) {}
+		iterator& operator=(T* rhs) {_ptr = rhs; return *this;} 
+		iterator& operator=(const iterator &rhs) {_ptr = rhs._ptr; return *this;}
+		iterator& operator+=( size_t rhs) {_ptr += rhs; return *this;}
+		iterator& operator-=( size_t rhs) {_ptr -= rhs; return *this;}
+		T& operator*() const {return *_ptr;}
+		T* operator->() const {return _ptr;}
+		T& operator[]( size_t rhs) const {return _ptr[rhs];}
+
+		iterator operator + (int n) const{ return iterator(_ptr + n); }
+		iterator operator++(int) {    iterator tmp(_ptr++);  return tmp;}
+		iterator& operator++() { ++_ptr;  return *this; }
+		iterator operator - (int n) const{  return iterator(_ptr - n); }
+		iterator operator--(int) { iterator tmp(_ptr--); return tmp; }
+		iterator& operator--() { --_ptr; return *this; }
+
+		size_t operator-(const iterator& rhs) const {return _ptr - rhs._ptr;}
+
+		bool operator==(const iterator& rhs) const {return _ptr == rhs._ptr;}
+		bool operator!=(const iterator& rhs) const {return _ptr != rhs._ptr;}
+		bool operator>(const iterator& rhs) const {return _ptr > rhs._ptr;}
+		bool operator<(const iterator& rhs) const {return _ptr < rhs._ptr;}
+		bool operator>=(const iterator& rhs) const {return _ptr >= rhs._ptr;}
+		bool operator<=(const iterator& rhs) const {return _ptr <= rhs._ptr;}
+	protected:
+		T* _ptr;
+	};
+	class const_iterator : public iterator
+	{
+	public:
+		const_iterator() : iterator() {}
+		// const_iterator(const const_iterator &other) : iterator(other) {}
+		const_iterator(const iterator &other) : iterator(other) {}
+		// const_iterator& operator=(const_iterator &rhs) {this->_ptr = rhs._ptr; return *this;}
+		const T& operator*() const {return *(this->_ptr);}
+		const T* operator->() const {return this->_ptr;}
+		const T& operator[]( size_t rhs) const {return this->_ptr[rhs];}
+	};
+	class reverse_iterator {
+	public:
+		reverse_iterator() : _ptr(nullptr) {}
+		reverse_iterator(T* rhs) : _ptr(rhs) {}
+		reverse_iterator(const reverse_iterator &rhs) : _ptr(rhs._ptr) {}
+		reverse_iterator& operator=(T* rhs) {_ptr = rhs; return *this;} 
+		reverse_iterator& operator=(const reverse_iterator &rhs) {_ptr = rhs._ptr; return *this;}
+		reverse_iterator& operator+=( size_t rhs) {_ptr -= rhs; return *this;}
+		reverse_iterator& operator-=( size_t rhs) {_ptr += rhs; return *this;}
+		T& operator*() const {return *_ptr;}
+		T* operator->() const {return _ptr;}
+		T& operator[]( size_t rhs) const {return _ptr[rhs];}
+
+		reverse_iterator operator + (int n) const{ return reverse_iterator(_ptr - n); }
+		reverse_iterator operator++(int) {    reverse_iterator tmp(_ptr--);  return tmp;}
+		reverse_iterator& operator++() { --_ptr;  return *this; }
+		reverse_iterator operator - (int n) const{  return reverse_iterator(_ptr + n); }
+		reverse_iterator operator--(int) { reverse_iterator tmp(_ptr++); return tmp; }
+		reverse_iterator& operator--() { ++_ptr; return *this; }
+
+		size_t operator-(const reverse_iterator& rhs) const {return _ptr - rhs._ptr;}
+
+		bool operator==(const reverse_iterator& rhs) const {return _ptr == rhs._ptr;}
+		bool operator!=(const reverse_iterator& rhs) const {return _ptr != rhs._ptr;}
+		bool operator>(const reverse_iterator& rhs) const {return _ptr > rhs._ptr;}
+		bool operator<(const reverse_iterator& rhs) const {return _ptr < rhs._ptr;}
+		bool operator>=(const reverse_iterator& rhs) const {return _ptr >= rhs._ptr;}
+		bool operator<=(const reverse_iterator& rhs) const {return _ptr <= rhs._ptr;}
+	protected:
+		T* _ptr;
+	};
+	class const_reverse_iterator : public reverse_iterator
+	{
+	public:
+		const_reverse_iterator() : reverse_iterator() {}
+		// const_reverse_iterator(const const_reverse_iterator &other) : reverse_iterator(other) {}
+		const_reverse_iterator(const reverse_iterator &other) : reverse_iterator(other) {}
+		// const_reverse_iterator& operator=(const_reverse_iterator &rhs) {this->_ptr = rhs._ptr; return *this;}
+		const T& operator*() const {return *(this->_ptr);}
+		const T* operator->() const {return this->_ptr;}
+		const T& operator[]( size_t rhs) const {return this->_ptr[rhs];}
+	};
+	const_iterator begin() const { return const_iterator(array); }
+	const_iterator end() const { return const_iterator(array + _size); }
+	iterator begin() { return iterator(array); }
+	iterator end() { return iterator(array + _size); }
+	const_reverse_iterator rbegin() const { return const_reverse_iterator(array + _size - 1); }
+	const_reverse_iterator rend() const { return const_reverse_iterator(array - 1); }
+	reverse_iterator rbegin() { return reverse_iterator(array + _size - 1); }
+	reverse_iterator rend() { return reverse_iterator(array - 1); }
 	Vector(const Vector &other)
 	{
 		reserve(other.size());
@@ -166,12 +258,56 @@ public:
 		ft::swap(this->_cap, other._cap);
 		ft::swap(this->array, other.array);
 	}
-	// iterator erase( iterator pos );
-	// iterator erase( iterator first, iterator last );
-	// iterator insert( iterator pos, const T& value );
-	// void insert( iterator pos, size_type count, const T& value );
-	// template< class InputIt >
-	// void insert( iterator pos, InputIt first, InputIt last);
+	iterator erase( iterator pos )
+	{
+		iterator tmp = pos;
+		for (; pos != end(); pos++)
+			*pos = *(pos+1);
+		_size--;
+		return tmp;
+	}
+	iterator erase( iterator first, iterator last )
+	{
+		size_t n = last - first;
+		for (size_t i = 0; i < n; i++)
+			erase(first);
+		return first;
+	}
+	void insert( iterator pos, size_t count, const T& value )
+	{
+		size_t tmp_size = _size;
+		size_t tmp_pos = pos - begin();
+		if (count + _size > _cap)
+			reserve(_cap * 2);
+		reserve(count + _size);
+		while (_size != tmp_size + count)
+			push_back(value);
+		pos = begin() + tmp_pos;
+		for (size_t k = 0; k < tmp_size - tmp_pos; k++)
+		{
+			array[_size - 1 - k] = array[tmp_size - 1 - k];
+			array[tmp_size - 1 - k] = value;
+		}
+	}
+	iterator insert( iterator pos, const T& value )
+	{
+		iterator it = pos;
+		this->insert(pos, 1, value);
+		return it;
+	}
+	template< class InputIt >
+	void insert( iterator pos, InputIt first, InputIt last)
+	{
+		size_t n = 0;
+		for (InputIt it = first; it != last; it++)
+			n++;
+		while (n)
+		{
+			pos = insert(pos, *first) + 1;
+			first++;
+			n--;
+		}
+	}
 	void	resize( size_t count, T value = T() )
 	{
 		if (count == _size)
@@ -190,11 +326,56 @@ public:
 				push_back(value);
 		}
 	}
+	friend bool operator==( const Vector& one, const Vector& two )
+	{
+		if (one.size() != two.size())
+			return false;
+		iterator it2 = two.begin();
+		for (iterator it = one.begin(); it != one.end(); it++)
+		{
+			if (*it != *it2)
+				return false;
+			it2++;
+		}
+		return true;
+	}
+	friend bool operator!=( const Vector& one, const Vector& two )
+	{
+		return !(one==two);
+	}
+	friend bool operator>( const Vector& one, const Vector& two )
+	{
+		iterator it2 = two.begin();
+		for (iterator it = one.begin(); it != one.end(); it++)
+		{
+			if (it2 == two.end())
+				return true;
+			if (*it > *it2)
+				return true;
+			if (*it < *it)
+				return false;
+			it2++;
+		}
+		if (it2 != two.end())
+			return false;
+		return true;
+	}
+	friend bool operator>=( const Vector& one, const Vector& two )
+	{
+		return (one > two || one == two);
+	}
+	friend bool operator<( const Vector& one, const Vector& two )
+	{
+		return !(one >= two);
+	}
+	friend bool operator<=( const Vector& one, const Vector& two )
+	{
+		return !(one > two);
+	}
 };
 
 template< class T, class Allocator>
-void swap( Vector<T,Allocator>& lhs, Vector<T,Allocator>& rhs )
-	{ lhs.swap(rhs); }
+void swap( Vector<T,Allocator>& lhs, Vector<T,Allocator>& rhs ) { lhs.swap(rhs); }
 
 }
 

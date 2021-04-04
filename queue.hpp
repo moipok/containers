@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 16:24:23 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/04/01 16:49:32 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/04 20:22:27 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,86 +111,38 @@ namespace ft
 			}
 			friend bool operator!=( const Queue& lhs, const Queue& rhs )
 			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() != rhs->size())
-					return true;
-				while (one)
-				{
-					if (one->content != two->content)
-						return true;
-					one = one->Prev;
-					two = two->Prev;
-				}
-				return false;
+				return !(lhs == rhs);
 			}
 			friend bool operator>( const Queue& lhs, const Queue& rhs )
 			{
 				Node<T> *one =  lhs->Get_node();
 				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() > rhs->size())
-					return true;
-				else if (lhs->size() < rhs->size())
-					return false;
 				while (one)
 				{
-					if (one->content <= two->content)
-						return false;
-					one = one->Prev;
-					two = two->Prev;
-				}
-				return true;
-			}
-			friend bool operator>=( const Queue& lhs, const Queue& rhs )
-			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() > rhs->size())
-					return true;
-				else if (lhs->size() < rhs->size())
-					return false;
-				while (one)
-				{
+					if (two == NULL)
+						return true;
 					if (one->content < two->content)
 						return false;
+					else if (one->content > two->content)
+						return true;
 					one = one->Prev;
 					two = two->Prev;
 				}
+				if (two != NULL)
+					return false;
 				return true;
 			}
-			friend bool operator<( const Queue& lhs, const Queue& rhs )
+			friend bool operator>=( const Queue& one, const Queue& two )
 			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() < rhs->size())
-					return true;
-				else if (lhs->size() > rhs->size())
-					return false;
-				while (one)
-				{
-					if (two->content <= one->content)
-						return false;
-					one = one->Prev;
-					two = two->Prev;
-				}
-				return true;
+				return (one > two || one == two);
 			}
-			friend bool operator<=( const Queue& lhs, const Queue& rhs )
+			friend bool operator<( const Queue& one, const Queue& two )
 			{
-				Node<T> *one =  lhs->Get_node();
-				Node<T> *two =  rhs->Get_node();
-				if (lhs->size() < rhs->size())
-					return true;
-				else if (lhs->size() > rhs->size())
-					return false;
-				while (one)
-				{
-					if (two->content < one->content)
-						return false;
-					one = one->Prev;
-					two = two->Prev;
-				}
-				return true;
+				return !(one >= two);
+			}
+			friend bool operator<=( const Queue& one, const Queue& two )
+			{
+				return !(one > two);
 			}
 		};
 };

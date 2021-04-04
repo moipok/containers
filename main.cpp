@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 20:55:42 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/04/03 20:32:42 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/04 20:08:42 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,20 +328,47 @@ int main()
 	Vector<std::string> vv2;
 	std::vector<std::string> v2;
 	std::string array[3] = {"one", "two", "three"};
-	vv2.assign(array, array + 3);
-	v2.assign(array, array + 3);
+	vv.assign(array, array + 3);
+	v.assign(array, array + 3);
+	v.push_back("!");
+	vv.push_back("!");
 	ft::swap(vv, vv2);
 	std::swap(v, v2);
 	ft::swap(vv, vv2);
 	std::swap(v, v2);
-	v.resize(19);
-	vv.resize(19);
-	for(std::vector<std::string>::iterator it = v.begin(); it != v.end(); it++)
-		std::cout << *it << " ";
+	vv.push_back("Hello");
+	vv.push_back("World");
+	vv.push_back("!");
+	vv.push_back("1");
+	
+	v.push_back("Hello");
+	v.push_back("World");
+	v.push_back("!");
+	v.push_back("1");
+	
+	vv.push_back("2");
+	vv.push_back("3");
+	vv.push_back("4");
+	vv.push_back("5");
+	
+	v.push_back("2");
+	v.push_back("3");
+	v.push_back("4");
+	v.push_back("5");
 	std::cout << std::endl;
-	for (size_t i = 0; i < vv.size(); i++)
-		std::cout << vv[i] << " ";
-	std::cout << std::endl;
+	std::vector<std::string>::iterator it = v.begin();
+	Vector<std::string>::iterator it2 = vv.begin();
+	
+	std::cout << *v.erase(it + 1, it + 3) << std::endl;
+	std::cout << *vv.erase(it2 + 1, it2 + 3) << std::endl;
+	v.insert(v.end() - 3, 12, "nana");
+	vv.insert(vv.end() - 3, 12, "nana");
+	it2 = vv.begin();
+	it = v.begin();
+	vv.insert(it2 + 5, array, array + 3);
+	v.insert(it + 5, array, array + 3);
+	it2 = vv.begin();
+	it = v.begin();
 	// v.reserve(10);
 	// vv.reserve(10);
 	// v2.reserve(100);
@@ -354,5 +381,44 @@ int main()
 	std::cout << v.capacity() << " - "	<< vv.capacity() << std::endl;
 	std::cout << v.back() << " - "		<< vv.back()<< std::endl;
 	std::cout << v.front() << " - "		<< vv.front()<< std::endl;
+	std::vector<std::string>::reverse_iterator it4 = v.rbegin();
+	Vector<std::string>::reverse_iterator it5 = vv.rbegin();
+	
+	for (; it5 != vv.rend(); it5++)
+		std::cout << *it5 << " ";
+	std::cout << " - my" << std::endl;
+	for (; it4 != v.rend(); it4++)
+		std::cout << *it4 << " ";
+	std::cout  << " - original" << std::endl;
 
+	{
+    Vector<int> alice;
+	int a[3] = {2, 2, 2};
+	alice.assign(a, a + 3);
+    Vector<int> bob;
+	int b[4] = {1, 1, 1, 1};
+	bob.assign(b, b + 4);
+    Vector<int> eve;
+	int c[3] = {1, 2, 3};
+	eve.assign(c, c+ 3);
+    std::cout << std::boolalpha;
+ 
+    // Compare non equal containers
+    std::cout << "alice == bob returns " << (alice == bob) << '\n';
+    std::cout << "alice != bob returns " << (alice != bob) << '\n';
+    std::cout << "alice <  bob returns " << (alice < bob) << '\n';
+    std::cout << "alice <= bob returns " << (alice <= bob) << '\n';
+    std::cout << "alice >  bob returns " << (alice > bob) << '\n';
+    std::cout << "alice >= bob returns " << (alice >= bob) << '\n';
+ 
+    std::cout << '\n';
+ 
+    // Compare equal containers
+    std::cout << "alice == eve returns " << (alice == eve) << '\n';
+    std::cout << "alice != eve returns " << (alice != eve) << '\n';
+    std::cout << "alice <  eve returns " << (alice < eve) << '\n';
+    std::cout << "alice <= eve returns " << (alice <= eve) << '\n';
+    std::cout << "alice >  eve returns " << (alice > eve) << '\n';
+    std::cout << "alice >= eve returns " << (alice >= eve) << '\n';
+	}
 }
