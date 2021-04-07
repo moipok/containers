@@ -6,7 +6,7 @@
 /*   By: fbarbera <fbarbera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/01 16:50:40 by fbarbera          #+#    #+#             */
-/*   Updated: 2021/04/04 20:16:00 by fbarbera         ###   ########.fr       */
+/*   Updated: 2021/04/05 14:01:27 by fbarbera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,30 @@ public:
 	const_reverse_iterator rend() const { return const_reverse_iterator(array - 1); }
 	reverse_iterator rbegin() { return reverse_iterator(array + _size - 1); }
 	reverse_iterator rend() { return reverse_iterator(array - 1); }
+	explicit Vector( const Allocator& alloc ) : _alloc(alloc), _size(0), array(NULL), _cap(0) {}
+	explicit Vector( size_t count, const T& value = T(), const Allocator& alloc = Allocator()) : _alloc(alloc), _size(0), array(NULL), _cap(0)
+	{
+		reserve(count);
+		for (size_t i = 0; i < count; i++)
+			push_back(value);
+	}
 	Vector(const Vector &other)
 	{
 		reserve(other.size());
 		_size = other.size();
 		for (size_t i = 0; i < _size; i++)
 			_alloc.construct(array + i, other[i]);
+	}
+	template< class InputIt >
+	Vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() , typename enable_if<!std::numeric_limits<InputIt>::is_specialized>::type * = 0)
+	: _alloc(alloc), _size(0), array(NULL), _cap(0)
+	{
+		size_t count = 0;
+		for (InputIt i = first; i != last; i++)
+			count++;
+		reserve(count);
+		for (; first != last; first++)
+			push_back(*first);	
 	}
 	Vector &operator=(const Vector &other)
 	{
@@ -296,7 +314,7 @@ public:
 		return it;
 	}
 	template< class InputIt >
-	void insert( iterator pos, InputIt first, InputIt last)
+	void insert( iterator pos, InputIt first, InputIt last, typename enable_if<!std::numeric_limits<InputIt>::is_specialized>::type * = 0)
 	{
 		size_t n = 0;
 		for (InputIt it = first; it != last; it++)

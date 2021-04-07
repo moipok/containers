@@ -67,6 +67,8 @@
 		"__functional_03": "cpp",
 		"memory_resource": "cpp",
 		"queue": "cpp",
-		"__sso_allocator": "cpp"
+		"__sso_allocator": "cpp",
+		"map": "cpp",
+		"__tree": "cpp"
 	}
 }
